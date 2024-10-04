@@ -1,19 +1,7 @@
-/* below is the styling code used to deorate the home page.
-use the nav bar in each page. */
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-
-footer {
-     background-color:gray
-    }
-
-Section {
-    margin-bottom:6%;
 }
 
 h2{
@@ -37,7 +25,7 @@ body {
     margin: 0 auto;
     padding: 0 20px;
 }
-
+   
 header {
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(10px);

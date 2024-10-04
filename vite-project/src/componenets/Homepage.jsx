@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import '../components_styles/Homepage.css';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Navbar from './Navbar';
 
 function HomePage() {
   const [email, setEmail] = useState('');
@@ -10,6 +12,7 @@ function HomePage() {
     // Add any email submission logic here
   };
 
+   //Variable holding all images, names, and descriptions for featured cars
   const featuredCars = [
     {
       img: 'https://uploads.builtforbackroads.com/uploads/2022/07/2022.07.29-CHEVROLET-CORVETTE-2017_1-1536x1024.jpg',
@@ -28,6 +31,7 @@ function HomePage() {
     },
   ];
 
+  //Variable holding all images, names, and descriptions for specialty cars
   const specialtyCars = [
     {
       img: 'https://www.motortrend.com/uploads/sites/11/2020/01/2015-Lamborghini-Veneno-Roadster-16.jpg?w=768&width=768&q=75&format=webp',
@@ -46,27 +50,9 @@ function HomePage() {
     },
   ];
 
+  //Middle Section of the Homepage.
   return (
-    <div>
-      <header>
-        <nav className="container">
-          <div className="logo">RevXtreme</div>
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li className="dropdown">
-              <a href="/inventory">Our Collection</a>
-              <div className="dropdown-content">
-                <a href="/AmericanMuscle">American Muscle</a>
-                <a href="/german">German</a>
-                <a href="/jdm">JDM</a>
-              </div>
-            </li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/Contact Us">Contact Us</a></li>
-          </ul>
-        </nav>
-      </header>
-
+    <div id="homebody">
       <main>
         {/* Hero Section */}
         <section className="hero" id="home">
@@ -110,7 +96,7 @@ function HomePage() {
         </section>
       </main>
 
-      {/* Footer */}
+      {/* Footer section */}
       <footer style={{ backgroundColor: 'gray' }}>
         <form className="cta-form" onSubmit={handleEmailSubmit}>
           <input
@@ -128,4 +114,40 @@ function HomePage() {
   );
 }
 
+// This here is how we fetch the backend data to the frontend using the useEffect hook
+function Homepage() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Function to fetch data from the backend
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://http://localhost:5173/');
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      <h1>inventory</h1>
+      {data ? (
+        <ul>
+          {data.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+}
+
 export default HomePage;
+

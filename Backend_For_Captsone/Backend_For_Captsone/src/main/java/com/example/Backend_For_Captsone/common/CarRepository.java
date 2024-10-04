@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CarRepository extends JpaRepository<Cars,Integer> {
+public interface CarRepository extends JpaRepository<Cars, Integer> {
 
-//   String findByName(String name);
+//  String findByName(String name);
 //
 //   void create(Cars cars);
 //

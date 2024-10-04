@@ -1,15 +1,104 @@
-import React, { useState } from 'react';
+import '../components_styles/Homepage.css';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
+import axios from 'axios';
 
-function CarCollection() {
+//Function to Handle Email Submission
+const handleEmailSubmit = (event) => {
+  event.preventDefault();
+  console.log('Email submitted:', email);
+  // Add any email submission logic here
+}
+
+// below is the CarCard component for individual car details
+const CarCard = ({ id, imageSrc, altText, title, year, price, horsepower, engine, color, transmission }) => {
+  return (
+    <div className="car-card" id={id}>
+      <img src={imageSrc} alt={altText} />
+      <div className="car-info">
+        <h3>{title}</h3>
+        <p>{`${year} | ${horsepower} HP | ${transmission} | $${price} | ${engine} | ${color}`}</p>
+        <Link to={`/ItemSingleView/${id}`}>View Details</Link>
+       <button
+       button
+       onClick={() => addToCart({ id, imageSrc, altText, title, year, price, horsepower, engine, color, transmission })}
+       className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
+     >
+       Add to Cart
+        </button>
+      </div>
+    </div>
+  );
+};
+
+//Below is the GermanCarGrid component for german cars
+function German() {
   const [email, setEmail] = useState('');
 
-  const handleEmailSubmit = (event) => {
-    event.preventDefault();
-    console.log('Email submitted:', email);
-    // Add any email submission logic here
-  };
+  //UseEffect Hook to Fetch Data from the API
+  const [cars, setCars] = useState([]);
 
-  const cars = [
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/cars')
+      .then(response => {
+        console.log(response.data);
+        setCars(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the cars!', error);
+      });
+  }, []);
+
+return(
+  // Main App Component
+  <div>
+  <section className="py-12 px-4" id="inventory">
+  <h2 className="text-3xl font-bold text-center mb-8">Our Collection</h2>
+  <div className="car-grid">
+ {cars.filter(car=> car.make == "BMW" || car.make == "Audi" || car.make == "Porsche").map((car) => (    
+    <CarCard
+      key={car.id}
+      id={car.id}
+      imageSrc={car.url}
+      altText={car.altText}
+      price={car.price}
+      horsepower={car.horsepower}
+      engine={car.engine}
+      color={car.color}
+      transmission={car.transmission}
+      year={car.year}
+      title={car.name}
+    />))}
+  </div>
+  </section>
+
+
+{/* this section below is the footer section for the page */}
+      <footer style={{ backgroundColor: 'gray' }}>
+        <form className="cta-form" onSubmit={handleEmailSubmit}>
+          <input
+            type="email"
+            placeholder="Enter Email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <button type="submit">Subscribe and Save 5%</button>
+        </form>
+        <p>&copy; 2024 RevXtreme. All rights reserved.</p>
+      </footer>
+    </div>
+
+);
+
+}
+
+export default German;
+  
+  // Grid for German vehicles with images, names, and descriptions. 
+  //Cars is the Variable Holding the Array of Objects
+ /* const cars = [
     {
       img: 'https://www.exclusiveautomotivegroup.com/imagetag/3286/main/l/Used-2020-Porsche-718-Cayman-GT4-1680550922.jpg',
       name: 'Porsche 718 Cayman',
@@ -55,59 +144,27 @@ function CarCollection() {
       name: 'BMW E60 M5',
       description: '2006 | 757 HP | Stainless Steel | $80,143 | 5.0L N/A | Sonic Blue | 30,005 mi.',
     },
-  ];
+  ];*/
 
-  return (
-    <div>
-      <header>
-        <nav className="container">
-          <div className="logo">RevXtreme</div>
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li className="dropdown">
-              <a href="/inventory">Our Collection</a>
-              <div className="dropdown-content">
-                <a href="/AmericanMuscle">American Muscle</a>
-                <a href="/german">German</a>
-                <a href="/jdm">JDM</a>
-              </div>
-            </li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/contact">News</a></li>
-          </ul>
-        </nav>
-      </header>
 
-      <section className="American-Muscle" id="inventory">
-        <div className="car-grid">
-          {cars.map((car, index) => (
-            <div className="car-card" key={index}>
-              <img src={car.img} alt={car.name} />
-              <div className="car-info">
-                <h3>{car.name}</h3>
-                <p>{car.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+  //section below should be to help map through the cars array and display the cars in the grid
+//  return (
+//     <div>
+      
+//       <section className="American-Muscle" id="inventory">
+//         <div className="car-grid">
+//           {cars.map((car, index) => (
+//             <div className="car-card" key={index}>
+//               <img src={car.img} alt={car.name} />
+//               <div className="car-info">
+//                 <h3>{car.name}</h3>
+//                 <p>{car.description}</p>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </section>
 
-      <footer style={{ backgroundColor: 'gray' }}>
-        <form className="cta-form" onSubmit={handleEmailSubmit}>
-          <input
-            type="email"
-            placeholder="Enter Email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <button type="submit">Subscribe and Save 5%</button>
-        </form>
-        <p>&copy; 2024 RevXtreme. All rights reserved.</p>
-      </footer>
-    </div>
-  );
-}
 
-export default CarCollection;
+
 
