@@ -12,7 +12,7 @@ const theme = {
 };
 
 //styling for my contact page
-const ContactPage = () => {
+const ContactUs = () => {
   const styles = {
     container: {
       maxWidth: '600px',
@@ -64,32 +64,24 @@ const ContactPage = () => {
       backgroundColor: theme.secondaryColor,
     },
   };
+}
 
-
-  // The form is not functional yet. It will need to be connected to a backend service to work.
+// Footer Component
+const Footer = () => {
   return (
-    <div style={styles.container}>
-      <h1 style={styles.header}>Contact Us</h1>
-      <form style={styles.form}>
-        <label style={styles.label} htmlFor="name">Name</label>
-        <input style={styles.input} type="text" id="name" name="name" />
-
-        <label style={styles.label} htmlFor="email">Email</label>
-        <input style={styles.input} type="email" id="email" name="email" />
-
-        <label style={styles.label} htmlFor="message">Message</label>
-        <textarea style={styles.textarea} id="message" name="message"></textarea>
-
-        <button
-          style={styles.button}
-          onMouseOver={(e) => (e.target.style.backgroundColor = styles.buttonHover.backgroundColor)}
-          onMouseOut={(e) => (e.target.style.backgroundColor = styles.button.backgroundColor)}
-        >
-          Submit
-        </button>
+    // Footer container
+    <footer>
+      {/* Form for email subscription */}
+      <form className="cta-form">
+        {/* Email input field */}
+        <input type="email" placeholder="Enter Email" required />
+        {/* Submit button for the form */}
+        <button type="submit">Subscribe and Save 5%</button>
       </form>
-    </div>
+      {/* Footer text */}
+      <p>&copy; 2024 RevXtreme. All rights reserved.</p>
+    </footer>
   );
 };
 
-export default ContactPage;
+export default ContactUs;

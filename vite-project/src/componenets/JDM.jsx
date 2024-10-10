@@ -1,114 +1,97 @@
-import '../components_styles/Homepage.css';
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
-import axios from 'axios';
-
-//Function to Handle Email Submission
-const handleEmailSubmit = (event) => {
-  event.preventDefault();
-  console.log('Email submitted:', email);
-  // Add any email submission logic here
-}
-
- // CarCard Component for individual car details
- const CarCard = ({ id, imageSrc, altText, title, year, make, name, price, horsepower, engine, color, transmission }) => {
-  return (
-    <div className="car-card" id={id}>
-      <img src={imageSrc} alt={altText} />
-      <div className="car-info">
-        <h3>{title}</h3>
-        <p>{`${year} | ${make} | ${name} | ${horsepower} HP | ${transmission} | $${price} | ${engine} | ${color} `}</p>
-        <Link to={`/car/${id}`} className="text-blue-500 underline"> View Vehicle </Link>
-       <button
-       button
-       onClick={() => addToCart({ id, imageSrc, altText, title, year, make, name, price, horsepower, engine, color, transmission })}
-       className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
-     >
-       Add to Cart
-        </button>
-
-      </div>
-    </div>
-  );
-};
-
-
-  //UseEffect Hook to Fetch Data from the API
+// Main App Component
 function JDM() {
+  // State to manage the email input value
   const [email, setEmail] = useState('');
 
-  //UseEffect Hook to Fetch Data from the API
+  // State to manage the list of cars fetched from the API
   const [cars, setCars] = useState([]);
 
+  // useEffect Hook to fetch data from the API when the component mounts
   useEffect(() => {
+    // Make a GET request to the API endpoint to fetch car data
     axios.get('http://localhost:8080/api/cars')
       .then(response => {
+        // Log the response data to the console for debugging
         console.log(response.data);
+        // Update the state with the fetched car data
         setCars(response.data);
       })
       .catch(error => {
+        // Log any errors that occur during the fetch operation
         console.error('There was an error fetching the cars!', error);
       });
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
 
-return(
-// Main App Component
-<div>
-<section className="py-12 px-4" id="inventory">
-<h2 className="text-3xl font-bold text-center mb-8">Our Collection</h2>
-<div className="car-grid">
-{cars.filter(car=> car.make == "Toyota" || car.make == "Subaru" || car.make == "Mazda" || car.make == "Nissan").map((car) => (    
-  <CarCard
-    key={car.id}
-    id={car.id}
-    imageSrc={car.url}
-    altText={car.altText}
-    price={car.price}
-    horsepower={car.horsepower}
-    engine={car.engine}
-    color={car.color}
-    transmission={car.transmission}
-    year={car.year}
-    title={car.name}
-  />))} 
-</div>
-</section>
+  return (
+    // Main container div for the component
+    <div>
+      {/* Section for displaying the car inventory */}
+      <section className="py-12 px-4" id="inventory">
+        {/* Section title */}
+        <h2 className="text-3xl font-bold text-center mb-8">Our Collection</h2>
+        {/* Grid container for car cards */}
+        <div className="car-grid">
+          {/* Filter and map over the cars array to display only specific makes */}
+          {cars.filter(car => car.make === "Toyota" || car.make === "Subaru" || car.make === "Mazda" || car.make === "Nissan").map((car) => (
+            // Render a CarCard component for each car
+            <CarCard
+              key={car.id} // Unique key for each car card
+              id={car.id} // Car ID
+              imageSrc={car.url} // Image URL for the car
+              altText={car.altText} // Alt text for the car image
+              price={car.price} // Price of the car
+              horsepower={car.horsepower} // Horsepower of the car
+              engine={car.engine} // Engine type of the car
+              color={car.color} // Color of the car
+              transmission={car.transmission} // Transmission type of the car
+              year={car.year} // Year of manufacture
+              title={car.name} // Title/name of the car
+            />
+          ))}
+        </div>
+      </section>
 
- {/* this section below is the footer section for the page */}
- <footer style={{ backgroundColor: 'gray' }}>
+      {/* Footer section for the page */}
+      <footer style={{ backgroundColor: 'gray' }}>
+        {/* Form for email subscription */}
         <form className="cta-form" onSubmit={handleEmailSubmit}>
+          {/* Email input field */}
           <input
             type="email"
             placeholder="Enter Email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            required // Make the input field required
+            value={email} // Bind the input value to the email state
+            onChange={(e) => setEmail(e.target.value)} // Update the state on input change
           />
+          {/* Submit button for the form */}
           <button type="submit">Subscribe and Save 5%</button>
         </form>
+        {/* Footer text */}
         <p>&copy; 2024 RevXtreme. All rights reserved.</p>
       </footer>
     </div>
-);
+  );
 }
 
 export default JDM;
-  
+
 // CarGrid Component for JDM cars
+// This component was intended to display a grid of JDM cars
 // const JDMCarGrid = () => {
 //   return (
 //     <div className="car-grid">
 //       {jdmCars.map((car, index) => (
+//         // Render a CarCard component for each car in the jdmCars array
 //         <CarCard
-//           key={index}
-//           id={car.id}
-//           imageSrc={car.imageSrc}
-//           altText={car.altText}
-//           title={car.title}
-//           details={car.details}
+//           key={index} // Unique key for each car card
+//           id={car.id} // Car ID
+//           imageSrc={car.imageSrc} // Image URL for the car
+//           altText={car.altText} // Alt text for the car image
+//           title={car.title} // Title/name of the car
+//           details={car.details} // Additional details about the car
 //         />
 //       ))}
 //     </div>
 //   );
 // };
+  

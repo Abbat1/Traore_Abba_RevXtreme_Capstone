@@ -1,11 +1,11 @@
 import '../components_styles/Inventory.css';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
  // CarCard Component for individual car details
-const CarCard = ({ id, imageSrc, altText, title, year, make, name, price, horsepower, engine, color, transmission }) => {
+const CarCard = ({ id, imageSrc, altText, title, year, make, name, price, horsepower, engine, color, transmission, deleteProduct }) => {
+  const navigate = useNavigate();
   return (
     <div className="car-card" id={id}>
       <img src={imageSrc} alt={altText} />
@@ -21,6 +21,18 @@ const CarCard = ({ id, imageSrc, altText, title, year, make, name, price, horsep
        Add to Cart
         </button>
 
+        <button
+          className="w-full bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 transition-colors"
+          onClick={() => navigate("/UpdateProduct" , {state: {id, imageSrc, altText, title, year, make, name, price, horsepower, engine, color, transmission}})} >
+          Update Product
+        </button>
+
+        <button
+          className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+          onClick={() => deleteProduct(id)}
+        >
+          Delete Product
+        </button>
       </div>
     </div>
   );
@@ -29,6 +41,22 @@ const CarCard = ({ id, imageSrc, altText, title, year, make, name, price, horsep
 // Main App Component
 const Inventory = () => {
   const [cars, setCars] = useState([]);
+
+  const deleteProduct = (id) => {
+    fetch(`http://localhost:8080/api/cars/${id}`, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        if (response.ok) {
+          console.log('Product deleted successfully!');
+        } else {
+          console.error('There was an error deleting the product!');
+        }
+      })
+      .catch(error => {
+        console.error('There was an error deleting the product!', error);
+      });
+  };
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/cars')
@@ -40,10 +68,6 @@ const Inventory = () => {
         console.error('There was an error fetching the cars!', error);
       });
   }, []);
-
-  // const addToCart = (car) => {
-  //   setCart([...cart, car]);
-  // };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -67,7 +91,7 @@ const Inventory = () => {
             year={car.year}
             make={car.make}
             name={car.name}
-            
+            deleteProduct={deleteProduct}
           />
         ))}
      </div>
@@ -96,12 +120,7 @@ export default Inventory;
 
 
 
-
-
-
-
-
-
+//below is the code for the CarCard component used rendering in the frontend only, which is why its commented out
    
 {/* <button
 button

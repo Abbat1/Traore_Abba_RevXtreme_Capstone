@@ -1,7 +1,6 @@
 import '../components_styles/Homepage.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
 import axios from 'axios';
 
 //Function to Handle Email Submission
@@ -32,23 +31,29 @@ const CarCard = ({ id, imageSrc, altText, title, year, price, horsepower, engine
   );
 };
 
-//Below is the GermanCarGrid component for german cars
+// GermanCarGrid component for German cars
 function German() {
+  // State to manage the email input value
   const [email, setEmail] = useState('');
 
-  //UseEffect Hook to Fetch Data from the API
+  // State to manage the list of cars fetched from the API
   const [cars, setCars] = useState([]);
 
+  // useEffect Hook to fetch data from the API when the component mounts
   useEffect(() => {
+    // Make a GET request to the API endpoint to fetch car data
     axios.get('http://localhost:8080/api/cars')
       .then(response => {
+        // Log the response data to the console for debugging
         console.log(response.data);
+        // Update the state with the fetched car data
         setCars(response.data);
       })
       .catch(error => {
+        // Log any errors that occur during the fetch operation
         console.error('There was an error fetching the cars!', error);
       });
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
 
 return(
   // Main App Component
@@ -96,6 +101,24 @@ return(
 
 export default German;
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // Grid for German vehicles with images, names, and descriptions. 
   //Cars is the Variable Holding the Array of Objects
  /* const cars = [

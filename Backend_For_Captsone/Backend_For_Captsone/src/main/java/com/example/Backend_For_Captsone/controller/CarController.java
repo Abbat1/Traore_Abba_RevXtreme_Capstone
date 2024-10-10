@@ -11,27 +11,31 @@ import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
-
 @RequestMapping("/api")
 @RestController
 public class CarController {
 
+    // Injecting the CarRepository to interact with the Cars table in the database
     private final CarRepository carRepository;
 
-
-    @GetMapping("/cars")
-    public List<Cars> getAllCars() {
-        return carRepository.findAll();
-    }
-
+    // Constructor to initialize the CarRepository
     @Autowired
     public CarController(CarRepository carRepository) {
         this.carRepository = carRepository;
     }
 
+    // Endpoint to get all cars
+    @GetMapping("/cars")
+    public List<Cars> getAllCars() {
+        // Fetching all cars from the database
+        return carRepository.findAll();
+    }
+
+    // Endpoint to update a car by its ID
     @PutMapping("/cars/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateCar(@RequestBody Cars car, @PathVariable Integer id) {
+        // Finding the car by ID and updating its details if it exists
         carRepository.findById(id).ifPresent(existingCar -> {
             existingCar.setTransmission(car.getTransmission());
             existingCar.setName(car.getName());
@@ -45,64 +49,30 @@ public class CarController {
             existingCar.setDrivetrain(car.getDrivetrain());
             existingCar.setPrice(car.getPrice());
             existingCar.setUrl(car.getUrl());
+            // Saving the updated car back to the database
             carRepository.save(existingCar);
         });
     }
-//
-//    // getting all of our timesheets
-//    @GetMapping("")
-//    public List<Cars> home(){
-//
-//        return carRepository.findAll();
-//    }
-//
-//    // Post a Timesheet
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PostMapping("")
-//    void CreateCars(@RequestBody Cars cars){
-//        carRepository.Create(cars);
-//
-//    }
-//    //
-//   // Get Item by id
+
+    // Endpoint to get a car by its ID
     @GetMapping("/cars/{id}")
     public ResponseEntity<Cars> getProductById(@PathVariable Integer id) {
+        // Finding the car by ID and returning it
         Cars car = carRepository.findById(id).orElse(null);
         return ResponseEntity.ok(car);
     }
 
-//    Cars getCarsByID(@PathVariable Integer id){
-//
-//        Optional<Cars> cars = carRepository.findById(id);
-//
-//        if(cars.isEmpty()){
-//            throw new RuntimeException();
-//        }
-//
-//        return cars.get();
-//
-//    }
-//    //
-////    @GetMapping("/locations/{location}")
-////    List<Timesheet> getTimesheetByLocation(@PathVariable String location){
-////        return timesheetRepository.findByLocation(location);
-////    }
-////
-//    // Put a Timesheet
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    @PutMapping("/{id}")
-//    void updateCars(@RequestBody Cars cars,
-//                         @PathVariable Integer id){
-//
-//        carRepository.update(cars,id);
-//    }
-//    //
-////
-////    // Delete a Timesheet
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    @DeleteMapping("/{id}")
-//    void deleteCars(@PathVariable Integer id){
-//
-//        carRepository.delete(id);
-//    }
+    @PostMapping
+    public ResponseEntity<Cars> addCar(@RequestBody Cars car) {
+        // Saving the new car to the database
+        Cars newCar = carRepository.save(car);
+        return ResponseEntity.ok(newCar);
+    }
+
+    @DeleteMapping("/cars/{id}")
+    public ResponseEntity<Void> deleteCar(@PathVariable Integer id) {
+        // Deleting the car by its ID
+        carRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

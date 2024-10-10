@@ -1,107 +1,105 @@
-import '../components_styles/Homepage.css';
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import Navbar from './Navbar';
+import '../components_styles/Homepage.css'; // Importing CSS for styling
+import React, { useState, useEffect } from 'react'; // Importing React and hooks
+import { Link } from 'react-router-dom'; // Importing Link component for navigation
+import axios from 'axios'; // Importing axios for making HTTP requests
+import Navbar from './Navbar'; // Importing Navbar component
 
-//Function to Handle Email Submission
+// Function to handle email submission
 const handleEmailSubmit = (event) => {
-  event.preventDefault();
-  console.log('Email submitted:', email);
+  event.preventDefault(); // Prevents the default form submission behavior
+  console.log('Email submitted:', email); // Logs the submitted email to the console
   // Add any email submission logic here
 }
 
- // CarCard Component for individual car details
- const CarCard = ({ id, imageSrc, altText, title, year, make, name, price, horsepower, engine, color, transmission }) => {
+// CarCard Component for displaying individual car details
+const CarCard = ({ id, imageSrc, altText, title, year, make, name, price, horsepower, engine, color, transmission }) => {
   return (
-    <div className="car-card" id={id}>
-      <img src={imageSrc} alt={altText} />
-      <div className="car-info">
-        <h3>{title}</h3>
-        <p>{`${year} | ${make} | ${name} | ${horsepower} HP | ${transmission} | $${price} | ${engine} | ${color} `}</p>
-        <Link to={`/car/${id}`} className="text-blue-500 underline"> View Vehicle </Link>
-       <button
-       button
-       onClick={() => addToCart({ id, imageSrc, altText, title, year, make, name, price, horsepower, engine, color, transmission })}
-       className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
-     >
-       Add to Cart
+    <div className="car-card" id={id}> {/* Container for each car card */}
+      <img src={imageSrc} alt={altText} /> {/* Car image */}
+      <div className="car-info"> {/* Container for car information */}
+        <h3>{title}</h3> {/* Car title */}
+        <p>{`${year} | ${make} | ${name} | ${horsepower} HP | ${transmission} | $${price} | ${engine} | ${color} `}</p> {/* Car details */}
+        <Link to={`/car/${id}`} className="text-blue-500 underline"> View Vehicle </Link> {/* Link to view more details about the car */}
+        <button
+          onClick={() => addToCart({ id, imageSrc, altText, title, year, make, name, price, horsepower, engine, color, transmission })} // Function to add car to cart
+          className="bg-blue-500 text-white px-4 py-2 mt-2 rounded" // Button styling
+        >
+          Add to Cart
         </button>
-
       </div>
     </div>
   );
 };
 
-//Below is the GermanCarGrid component for german cars
+// Main component for displaying American muscle cars
 function AmericanMuscle() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(''); // State for storing email input
 
-  //UseEffect Hook to Fetch Data from the API
+  // State for storing car data fetched from the API
   const [cars, setCars] = useState([]);
 
+  // useEffect hook to fetch car data from the API when the component mounts
   useEffect(() => {
-    axios.get('http://localhost:8080/api/cars')
+    axios.get('http://localhost:8080/api/cars') // Making a GET request to fetch car data
       .then(response => {
-        console.log(response.data);
-        setCars(response.data);
+        console.log(response.data); // Logging the response data
+        setCars(response.data); // Updating the state with the fetched car data
       })
       .catch(error => {
-        console.error('There was an error fetching the cars!', error);
+        console.error('There was an error fetching the cars!', error); // Logging any errors
       });
   }, []);
 
-return(
-  // Main App Component
-  <div>
-  <section className="py-12 px-4" id="inventory">
-  <h2 className="text-3xl font-bold text-center mb-8">Our Collection</h2>
-  <div className="car-grid">
- {cars.filter(car=> car.make == "Dodge" || car.make == "Chevrolet" || car.make == "Ford").map((car) => (    
-    <CarCard
-      key={car.id}
-      id={car.id}
-      imageSrc={car.url}
-      altText={car.altText}
-      price={car.price}
-      horsepower={car.horsepower}
-      engine={car.engine}
-      color={car.color}
-      transmission={car.transmission}
-      year={car.year}
-      title={car.name}
-      year={car.year}
-      make={car.make}
-      name={car.name}
-    />
-   ))}
-  </div>
-  </section>
+  return (
+    <div>
+      <section className="py-12 px-4" id="inventory"> {/* Section for displaying car inventory */}
+        <h2 className="text-3xl font-bold text-center mb-8">Our Collection</h2> {/* Section title */}
+        <div className="car-grid"> {/* Container for car grid */}
+          {cars.filter(car => car.make === "Dodge" || car.make === "Chevrolet" || car.make === "Ford").map((car) => ( // Filtering and mapping over the car data to display only American muscle cars
+            <CarCard
+              key={car.id} // Unique key for each car card
+              id={car.id}
+              imageSrc={car.url}
+              altText={car.altText}
+              price={car.price}
+              horsepower={car.horsepower}
+              engine={car.engine}
+              color={car.color}
+              transmission={car.transmission}
+              year={car.year}
+              title={car.name}
+              make={car.make}
+              name={car.name}
+            />
+          ))}
+        </div>
+      </section>
 
-{/* this section below is the footer section for the page */}
+      {/* Footer section */}
       <footer style={{ backgroundColor: 'gray' }}>
-        <form className="cta-form" onSubmit={handleEmailSubmit}>
+        <form className="cta-form" onSubmit={handleEmailSubmit}> {/* Form for email subscription */}
           <input
             type="email"
             placeholder="Enter Email"
             required
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)} // Updating the email state on input change
           />
-          <button type="submit">Subscribe and Save 5%</button>
+          <button type="submit">Subscribe and Save 5%</button> {/* Submit button */}
         </form>
-        <p>&copy; 2024 RevXtreme. All rights reserved.</p>
+        <p>&copy; 2024 RevXtreme. All rights reserved.</p> {/* Footer text */}
       </footer>
     </div>
-
-);
-
+  );
 }
-export default AmericanMuscle;
+
+export default AmericanMuscle; // Exporting the AmericanMuscle component as default
 
 
 
 
+
+//below is the code for the car card component being rendered in the frontend
 // const cars = [
   //   {
   //     id: 'cadillac',
