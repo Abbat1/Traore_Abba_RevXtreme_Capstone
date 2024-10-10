@@ -68,5 +68,10 @@ Stretch Goals / Future Enhancements
 Figma
 Belwo I've attached is my figma link for the initial design concept: https://www.figma.com/design/nNViBFwPtX8P3DMJ5LWNE6/Untitled?node-id=0-1&node-type=canvas&t=Qno9Yii8RonayEnS-0
 
+MySql Schema diagram
+
+![image](https://github.com/user-attachments/assets/b6c9962f-18b8-4b75-98a4-b997883fd68b)
+
+
 
 
