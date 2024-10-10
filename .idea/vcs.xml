@@ -2,7 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vite-project" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vite-project/node_modules/vite-project" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Frontend/vite-project" vcs="Git" />
   </component>
 </project>
