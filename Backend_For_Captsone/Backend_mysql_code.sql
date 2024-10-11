@@ -1,1 +1,2 @@
-select * from carsdb.cars
+select * from carsdb.car;
+select *from user;
