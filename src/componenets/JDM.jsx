@@ -77,21 +77,21 @@ export default JDM;
 
 // CarGrid Component for JDM cars
 // This component was intended to display a grid of JDM cars
-// const JDMCarGrid = () => {
-//   return (
-//     <div className="car-grid">
-//       {jdmCars.map((car, index) => (
-//         // Render a CarCard component for each car in the jdmCars array
-//         <CarCard
-//           key={index} // Unique key for each car card
-//           id={car.id} // Car ID
-//           imageSrc={car.imageSrc} // Image URL for the car
-//           altText={car.altText} // Alt text for the car image
-//           title={car.title} // Title/name of the car
-//           details={car.details} // Additional details about the car
-//         />
-//       ))}
-//     </div>
-//   );
-// };
+const JDMCarGrid = () => {
+  return (
+    <div className="car-grid">
+      {jdmCars.map((car, index) => (
+        // Render a CarCard component for each car in the jdmCars array
+        <CarCard
+          key={index} // Unique key for each car card
+          id={car.id} // Car ID
+          imageSrc={car.imageSrc} // Image URL for the car
+          altText={car.altText} // Alt text for the car image
+          title={car.title} // Title/name of the car
+          details={car.details} // Additional details about the car
+        />
+      ))}
+    </div>
+  );
+};
   

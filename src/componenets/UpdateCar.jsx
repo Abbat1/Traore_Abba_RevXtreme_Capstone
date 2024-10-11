@@ -31,7 +31,6 @@ const UpdateCar = ({ car }) => {
       });
   };
 
-
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#f7fafc', color: 'Orange'}}>
      
